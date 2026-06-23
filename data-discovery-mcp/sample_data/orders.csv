@@ -1,0 +1,6 @@
+id,user_id,product_id,order_total,status,ordered_at
+1001,1,501,129.99,paid,2024-04-01
+1002,2,503,49.50,shipped,2024-04-03
+1003,1,502,15.00,cancelled,2024-04-07
+1004,3,501,129.99,paid,2024-04-09
+
