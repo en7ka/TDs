@@ -1,0 +1,14 @@
+{
+  "sources": [
+    {
+      "source_id": "sqlite_demo",
+      "kind": "sqlite",
+      "path": "sample_data/demo.db"
+    },
+    {
+      "source_id": "csv_demo",
+      "kind": "csv",
+      "path": "sample_data"
+    }
+  ]
+}

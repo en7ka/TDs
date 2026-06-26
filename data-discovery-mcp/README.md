@@ -16,9 +16,10 @@
 - `discovery/connectors/csv_connector.py` — чтение CSV: заголовки, примерное определение типов, sample rows.
 - `discovery/index/indexer.py` — преобразование схем в документы индекса.
 - `discovery/index/store.py` — хранение индекса в локальной SQLite базе.
-- `discovery/search/service.py` — поиск по ключевым словам.
+- `discovery/search/service.py` — поиск по ключевым словам через SQLite FTS5.
 - `discovery/mcp_server.py` — MCP tools на FastMCP.
 - `discovery/cli.py` — CLI для ручной проверки.
+- `sources.json` — конфигурация источников.
 
 Документ индекса имеет единый формат:
 
@@ -33,9 +34,9 @@
 }
 ```
 
-Поиск простой: case-insensitive match по `title`, `path` и `text`, затем сортировка по `score`.
-
 ## Демонстрация поиска
+
+Для демонстрации выбран CLI, как разрешено в задании.
 
 Сначала нужно проиндексировать источники:
 

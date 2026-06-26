@@ -95,7 +95,7 @@ class CSVConnector(BaseConnector):
 
     @staticmethod
     def _is_boolean(value: str) -> bool:
-        return value.lower() in {"true", "false", "yes", "no", "0", "1"}
+        return value.lower() in {"true", "false", "yes", "no"}
 
     @staticmethod
     def _is_date(value: str) -> bool:
@@ -112,4 +112,3 @@ class CSVConnector(BaseConnector):
             return True
         except ValueError:
             return False
-

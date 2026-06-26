@@ -1,3 +1,5 @@
+import pytest
+
 from pathlib import Path
 
 from discovery.connectors.sqlite_connector import SQLiteConnector
@@ -21,3 +23,9 @@ def test_sqlite_connector_reads_tables_schema_and_samples() -> None:
     assert schema.sample_rows[0]["email"] == "alice@example.com"
     assert schema.metadata["row_count"] == 4
 
+
+def test_sqlite_connector_raises_for_missing_table() -> None:
+    connector = SQLiteConnector("sqlite_demo", PROJECT_ROOT / "sample_data" / "demo.db")
+
+    with pytest.raises(ValueError, match="was not found"):
+        connector.get_schema("missing_table")

@@ -29,16 +29,27 @@ class SQLiteConnector(BaseConnector):
 
     def get_schema(self, path: str) -> DataObjectSchema:
         table_name = path.strip()
-        if table_name not in self.list_objects():
-            raise ValueError(f"Table '{path}' was not found in source '{self.source_id}'")
-
         quoted_table = self._quote_identifier(table_name)
         with self._connect() as connection:
+            table_exists = connection.execute(
+                """
+                SELECT 1
+                FROM sqlite_master
+                WHERE type = 'table'
+                  AND name = ?
+                  AND name NOT LIKE 'sqlite_%'
+                """,
+                (table_name,),
+            ).fetchone()
+            if table_exists is None:
+                raise ValueError(f"Table '{path}' was not found in source '{self.source_id}'")
+
             column_rows = connection.execute(f"PRAGMA table_info({quoted_table})").fetchall()
             sample_rows = connection.execute(
                 f"SELECT * FROM {quoted_table} LIMIT ?",
                 (self.sample_size,),
             ).fetchall()
+            row_count = self._count_rows(connection, quoted_table)
 
         columns = [
             ColumnSchema(
@@ -62,7 +73,7 @@ class SQLiteConnector(BaseConnector):
             sample_rows=[dict(row) for row in sample_rows],
             metadata={
                 "database_path": str(self.database_path),
-                "row_count": self._count_rows(table_name),
+                "row_count": row_count,
             },
         )
 
@@ -71,10 +82,8 @@ class SQLiteConnector(BaseConnector):
         connection.row_factory = sqlite3.Row
         return connection
 
-    def _count_rows(self, table_name: str) -> int:
-        quoted_table = self._quote_identifier(table_name)
-        with self._connect() as connection:
-            row = connection.execute(f"SELECT COUNT(*) AS count FROM {quoted_table}").fetchone()
+    def _count_rows(self, connection: sqlite3.Connection, quoted_table: str) -> int:
+        row = connection.execute(f"SELECT COUNT(*) AS count FROM {quoted_table}").fetchone()
         return int(row["count"])
 
     @staticmethod

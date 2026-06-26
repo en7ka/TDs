@@ -26,3 +26,10 @@ def test_search_finds_email_order_and_product(tmp_path: Path) -> None:
     assert any("products" in result["path"] or "product_id" in result["path"] for result in product_results)
     assert email_results[0]["score"] >= email_results[-1]["score"]
 
+
+def test_search_returns_empty_list_for_empty_query(tmp_path: Path) -> None:
+    store = IndexStore(tmp_path / "index.sqlite")
+    service = SearchService(store)
+
+    assert service.search("") == []
+    assert service.search("   ") == []
