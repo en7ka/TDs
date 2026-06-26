@@ -34,6 +34,21 @@
 }
 ```
 
+## Установка
+
+```bash
+python3.12 -m venv .venv
+source .venv/bin/activate
+python -m pip install --upgrade pip
+python -m pip install -e ".[dev]"
+```
+
+`.[dev]` нужен для запуска тестов и устанавливает `pytest`. Если тесты не нужны, достаточно:
+
+```bash
+python -m pip install -e .
+```
+
 ## Демонстрация поиска
 
 Для демонстрации выбран CLI, как разрешено в задании.
