@@ -71,12 +71,26 @@ python -m discovery.cli search product
 
 Пример: поиск `keyboard` вернет таблицу `products` и колонки `products.name`, `products.sku`, потому что в sample rows есть значения `Mechanical Keyboard` и `SKU-KEYBOARD`.
 
+Пример вывода:
+
+```text
+[1.94] sqlite_demo / column / products.sku
+       тип: TEXT
+
+[1.92] sqlite_demo / column / products.name
+       тип: TEXT
+
+[1.55] sqlite_demo / table / products
+```
+
 Посмотреть схему объекта:
 
 ```bash
 python -m discovery.cli schema sqlite_demo products
 python -m discovery.cli schema csv_demo orders.csv
 ```
+
+Схема выводится таблицей с колонками, типами и nullable-флагом.
 
 Посмотреть доступные источники:
 
